@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import android.widget.Toast;
 import br.eng.crisjr.sheep.Controller.Sheeps;
 import br.eng.crisjr.sheep.Model.Sheep;
 import br.eng.crisjr.sheep.View.MainView;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private Sheeps controller = new Sheeps();
     private Typeface fontIcon = null;
     private boolean isEditing = false;
+    private boolean isRemoving = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,21 +83,62 @@ public class MainActivity extends AppCompatActivity {
 
     private void enterEditing()
     {
-        Context context = getApplicationContext();
+        final Context context = getApplicationContext();
         LinearLayout layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
         ArrayList<Sheep> sheeps = controller.getSheeps();
 
+        /* Change button's icon */
+        // TODO: change the icon to a "right" sign
+
+        /**/
         if (sheeps.size() == 0) {
             layoutSheeps.removeAllViews();
-            LinearLayout layoutSheep = MainView.newEmptySheep(context);
-            layoutSheeps.addView(layoutSheep);
+            addEmptySheep(context);
         }
 
         layoutSheeps.addView(new Button(context) {
             @Override
             public void setOnClickListener(OnClickListener l) {
-                super.setOnClickListener(l); // TODO: give a callback to this button
+                addEmptySheep(context);
             }
         });
+    }
+
+    private LinearLayout addEmptySheep(Context context, LinearLayout layoutSheeps)
+    {
+        LinearLayout layoutSheep = MainView.newEmptySheep(context);
+        int howMany = layoutSheeps.getChildCount();
+
+        if (howMany == 0) {
+            layoutSheeps.addView(layoutSheep);
+        }
+        else {
+            layoutSheeps.addView(layoutSheep, howMany-1);
+        }
+        
+        return layoutSheeps;
+    }
+
+    private void addEmptySheep(Context context)
+    {
+        LinearLayout ls = (LinearLayout) findViewById(R.id.layoutSheeps);
+        ls = addEmptySheep(context, ls);
+    }
+
+    /**
+     * Sets the callback to the remove button
+     * @param view
+     */
+    public void onClickRemoveButton(View view)
+    {
+        String text = "Not removing";
+
+        // TODO: implement logic to remove button
+        if (isRemoving) {
+            text = "Removing now";
+        }
+
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+        isRemoving = !isRemoving;
     }
 }

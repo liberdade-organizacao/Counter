@@ -3,6 +3,11 @@ package br.eng.crisjr.sheep.Controller;
 import java.util.ArrayList;
 import br.eng.crisjr.sheep.Model.Sheep;
 
+/**
+ * Class that implements the controller. I know that the plural of sheep is sheep
+ * but I needed to differentiate the model from the controller somehow. SheepController
+ * would occupy too much space and make me waste time.
+ */
 public class Sheeps {
     private ArrayList<Sheep> sheeps = null;
 
