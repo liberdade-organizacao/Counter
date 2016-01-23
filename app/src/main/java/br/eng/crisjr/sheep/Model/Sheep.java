@@ -2,8 +2,9 @@ package br.eng.crisjr.sheep.Model;
 
 public class Sheep {
     private String name = null;
-    private long count = 0;
+    private int count = 0;
 
+    public Sheep() {};
     public Sheep(String name) {
         this.setName(name);
     }
@@ -13,7 +14,7 @@ public class Sheep {
         return this.name;
     }
 
-    public long getCount() {
+    public int getCount() {
         return this.count;
     }
 
@@ -22,7 +23,7 @@ public class Sheep {
         return this.name;
     }
 
-    public long setCount(long count) {
+    public int setCount(int count) {
         this.count = count;
         return this.count;
     }

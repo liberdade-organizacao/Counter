@@ -78,7 +78,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void exitEditing()
     {
+        final Context context = getApplicationContext();
+        LinearLayout layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
+        int howMany = layoutSheeps.getChildCount();
 
+        layoutSheeps.removeViewAt(howMany-1);
+        controller.setSheeps(MainView.extractSheeps(context, layoutSheeps));
     }
 
     private void enterEditing()
@@ -101,6 +106,11 @@ public class MainActivity extends AppCompatActivity {
             public void setOnClickListener(OnClickListener l) {
                 addEmptySheep(context);
             }
+
+            @Override
+            public void setText(CharSequence text, BufferType type) {
+                super.setText("+", type);
+            }
         });
     }
 
@@ -110,19 +120,18 @@ public class MainActivity extends AppCompatActivity {
         int howMany = layoutSheeps.getChildCount();
 
         if (howMany == 0) {
-            layoutSheeps.addView(layoutSheep);
+            ++howMany;
         }
-        else {
-            layoutSheeps.addView(layoutSheep, howMany-1);
-        }
-        
+
+        layoutSheeps.addView(layoutSheep, howMany-1);
         return layoutSheeps;
     }
 
-    private void addEmptySheep(Context context)
+    private LinearLayout addEmptySheep(Context context)
     {
         LinearLayout ls = (LinearLayout) findViewById(R.id.layoutSheeps);
         ls = addEmptySheep(context, ls);
+        return ls;
     }
 
     /**

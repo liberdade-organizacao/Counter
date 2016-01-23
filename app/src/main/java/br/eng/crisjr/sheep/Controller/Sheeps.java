@@ -30,6 +30,11 @@ public class Sheeps {
     public ArrayList<Sheep> getSheeps() {
         return this.sheeps;
     }
+    public ArrayList<Sheep> setSheeps(ArrayList<Sheep> sheeps)
+    {
+        this.sheeps = sheeps;
+        return this.sheeps;
+    }
 
     public Sheep removeSheep(int index) {
         Sheep sheep = this.sheeps.get(index);

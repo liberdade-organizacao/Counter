@@ -119,4 +119,53 @@ public class MainView {
         return layoutSheep;
     }
 
+    /**
+     * Creates a list out a layout on the screen.
+     * @param context the application context.
+     * @param layoutSheeps the layout from which the method will extract the sheep.
+     * @return an arraylist of the sheep currently on screen.
+     */
+    public static ArrayList<Sheep> extractSheeps(Context context, LinearLayout layoutSheeps)
+    {
+        ArrayList<Sheep> sheeps = new ArrayList<>();
+        int howMany = layoutSheeps.getChildCount();
+
+        for (int i = 0; i < howMany; ++i)
+        {
+            LinearLayout layoutSheep = (LinearLayout) layoutSheeps.getChildAt(i);
+            String name = getNameFromLayout(layoutSheep);
+            int count = getCountFromLayout(layoutSheep);
+
+            Sheep sheep = new Sheep();
+            sheep.setName(name);
+            sheep.setCount(count);
+            sheeps.add(sheep);
+        }
+
+        return sheeps;
+    }
+
+    private static String getNameFromLayout(LinearLayout ls)
+    {
+        String name = null;
+        View view = ls.getChildAt(0);
+
+        try {
+            TextView text = (TextView) view;
+            name = text.getText().toString();
+
+        }
+        catch (ClassCastException cc) {
+            EditText edit = (EditText) view;
+            name = edit.getText().toString();
+        }
+
+        return name;
+    }
+
+    private static int getCountFromLayout(LinearLayout ls)
+    {
+        TextView tv = (TextView) ls.getChildAt(2);
+        return Integer.parseInt(tv.getText().toString());
+    }
 }
