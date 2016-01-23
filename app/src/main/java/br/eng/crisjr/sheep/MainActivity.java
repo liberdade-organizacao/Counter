@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         /* change typefaces */
+        // TODO: discover how to change app's typeface
 //        fontIcon = Typeface.createFromAsset(getAssets(), "open-iconic.ttf");
 //        Button btn = (Button) findViewById(R.id.buttonEdit);
 //        btn.setTypeface(fontIcon); btn.setText("\uE0DB");
