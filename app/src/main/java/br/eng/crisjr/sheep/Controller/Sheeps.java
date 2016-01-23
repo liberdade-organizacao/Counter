@@ -14,16 +14,19 @@ public class Sheeps {
         this();
     }
 
-    public void add(String name) {
+    public void addSheep(String name) {
         Sheep sheep = new Sheep(name);
         this.sheeps.add(sheep);
     }
 
-    public ArrayList<Sheep> get() {
+    /**
+     * @return the current arraylist of sheeps
+     */
+    public ArrayList<Sheep> getSheeps() {
         return this.sheeps;
     }
 
-    public Sheep remove(int index) {
+    public Sheep removeSheep(int index) {
         Sheep sheep = this.sheeps.get(index);
         this.sheeps.remove(index);
         return sheep;

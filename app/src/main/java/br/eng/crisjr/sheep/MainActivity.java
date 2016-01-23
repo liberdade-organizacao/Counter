@@ -13,10 +13,12 @@ import java.util.ArrayList;
 
 import br.eng.crisjr.sheep.Controller.Sheeps;
 import br.eng.crisjr.sheep.Model.Sheep;
+import br.eng.crisjr.sheep.View.MainView;
 
 public class MainActivity extends AppCompatActivity {
     private Sheeps controller = new Sheeps();
     private Typeface fontIcon = null;
+    private boolean isEditing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,24 +26,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         /* change typefaces */
-        fontIcon = Typeface.createFromAsset(getAssets(), "open-iconic.ttf");
-        Button btn = (Button) findViewById(R.id.buttonEdit);
-        btn.setTypeface(fontIcon); btn.setText("\uE0DB");
-        btn = (Button) findViewById(R.id.buttonRemove);
-        btn.setTypeface(fontIcon); btn.setText("\uE0AA");
+//        fontIcon = Typeface.createFromAsset(getAssets(), "open-iconic.ttf");
+//        Button btn = (Button) findViewById(R.id.buttonEdit);
+//        btn.setTypeface(fontIcon); btn.setText("\uE0DB");
+//        btn = (Button) findViewById(R.id.buttonRemove);
+//        btn.setTypeface(fontIcon); btn.setText("\uE0AA");
 
         updateSheeps();
     }
 
-    private void updateSheeps() {
+    /**
+     * Update the list of sheeps on screen
+     */
+    private void updateSheeps()
+    {
         LinearLayout layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
-        ArrayList<Sheep> sheeps = controller.get();
+        ArrayList<Sheep> sheeps = controller.getSheeps();
+        Context context = getApplicationContext();
 
         if (sheeps.size() != 0) {
             layoutSheeps.removeAllViews();
-            populateSheeps(layoutSheeps, sheeps);
+            MainView.populateSheeps(context, layoutSheeps, sheeps);
         } else {
-            TextView tt = new TextView(getApplicationContext());
+            TextView tt = new TextView(context);
             tt.setText(R.string.empty_sheeps);
             tt.setTextColor(0xffeeeeee);
             tt.setBackgroundColor(0xff000000);
@@ -49,24 +56,46 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void populateSheeps(LinearLayout layout, ArrayList<Sheep> sheeps) {
-        for (int index = 0; index < sheeps.size(); ++index)
-        {
-            layout.addView(createSheep(sheeps.get(index)));
+    /**
+     * Callback to edit button. If it is not in editing mode, it will trigger the
+     * edition tools; otherwise it will save the current sheeps' state.
+     * @param view
+     */
+    public void onClickEditButton(View view)
+    {
+        if (isEditing) {
+            exitEditing();
+            updateSheeps();
         }
+        else {
+            enterEditing();
+        }
+
+        isEditing = !isEditing;
     }
 
-    private View createSheep(Sheep sheep) {
+    private void exitEditing()
+    {
+
+    }
+
+    private void enterEditing()
+    {
         Context context = getApplicationContext();
-        LinearLayout layout = new LinearLayout(context);
-        TextView text = new TextView(context);
+        LinearLayout layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
+        ArrayList<Sheep> sheeps = controller.getSheeps();
 
-        text.setText(sheep.getName());
-        text.setTextColor(0xffeeeeee);
-        text.setBackgroundColor(0xff000000);
-        layout.addView(text);
+        if (sheeps.size() == 0) {
+            layoutSheeps.removeAllViews();
+            LinearLayout layoutSheep = MainView.newEmptySheep(context);
+            layoutSheeps.addView(layoutSheep);
+        }
 
-        return layout;
+        layoutSheeps.addView(new Button(context) {
+            @Override
+            public void setOnClickListener(OnClickListener l) {
+                super.setOnClickListener(l); // TODO: give a callback to this button
+            }
+        });
     }
-
 }

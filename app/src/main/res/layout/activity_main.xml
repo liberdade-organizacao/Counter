@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:text="+"
             android:layout_weight="0.5"
+            android:onClick="onClickEditButton"
             android:background="@color/colorPrimaryDark"
             android:textColor="@color/colorText"
             android:id="@+id/buttonEdit"/>
