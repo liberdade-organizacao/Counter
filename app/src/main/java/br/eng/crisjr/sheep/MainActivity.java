@@ -66,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
      */
     public void onClickEditButton(View view)
     {
+        if (isRemoving) {
+            isRemoving = !isRemoving;
+        }
+
         if (isEditing) {
             exitEditing();
             updateSheeps();
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         isEditing = !isEditing;
     }
 
+    /* Exiting edit mode */
     private void exitEditing()
     {
         final Context context = getApplicationContext();
@@ -87,16 +92,16 @@ public class MainActivity extends AppCompatActivity {
         controller.setSheeps(MainView.extractSheeps(context, layoutSheeps));
     }
 
+    /* Entering edit mode */
     private void enterEditing()
     {
-        final Context context = getApplicationContext();
+        Context context = getApplicationContext();
         LinearLayout layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
         ArrayList<Sheep> sheeps = controller.getSheeps();
 
         /* Change button's icon */
         // TODO: change the icon to a "right" sign
 
-        /**/
         if (sheeps.size() == 0) {
             layoutSheeps.removeAllViews();
             addEmptySheep(context);
@@ -105,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         layoutSheeps.addView(new Button(context) {
             @Override
             public void setOnClickListener(OnClickListener l) {
-                addEmptySheep(context);
+                addEmptySheep(getApplicationContext());
             }
 
             @Override
@@ -131,7 +136,10 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout addEmptySheep(Context context)
     {
         LinearLayout ls = (LinearLayout) findViewById(R.id.layoutSheeps);
-        ls = addEmptySheep(context, ls);
+        addEmptySheep(context, ls);
+        Toast.makeText(MainActivity.this,
+                       new Integer(ls.getChildCount()).toString(),
+                       Toast.LENGTH_SHORT).show();
         return ls;
     }
 
@@ -143,8 +151,13 @@ public class MainActivity extends AppCompatActivity {
     {
         String text = "Not removing";
 
+        if (isEditing) {
+            exitEditing();
+            isEditing = !isEditing;
+        }
+
         // TODO: implement logic to remove button
-        if (isRemoving) {
+        if (!isRemoving) {
             text = "Removing now";
         }
 

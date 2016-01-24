@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import br.eng.crisjr.sheep.Model.Sheep;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -19,11 +20,11 @@ import java.util.ArrayList;
 public class MainView {
 
     /**
-     *
-     * @param context
-     * @param layout
-     * @param sheeps
-     * @return
+     * Fills the sheeps layout with sheep
+     * @param context application context
+     * @param layout layout that will have the sheep added to
+     * @param sheeps list of sheep
+     * @return layout filled with sheep
      */
     public static LinearLayout populateSheeps(Context context,
                                               LinearLayout layout,
@@ -31,23 +32,35 @@ public class MainView {
     {
         for (int index = 0; index < sheeps.size(); ++index)
         {
-            layout.addView(createSheep(context, sheeps.get(index)));
+            Sheep sheep = sheeps.get(index);
+            String name = sheep.getName();
+            int count = sheep.getCount();
+            layout.addView(newSheep(context, name, count));
         }
 
         return layout;
     }
 
-    private static View createSheep(Context context, Sheep sheep)
+    /**
+     * adds a sheep with the defined information
+     * @param context the application's context
+     * @param name the sheep's name
+     * @param count the sheep's count
+     * @return a layout containing the specified sheep
+     */
+    public static LinearLayout newSheep(Context context, String name, int count)
     {
-        LinearLayout layout = new LinearLayout(context);
-        TextView text = new TextView(context);
+        LinearLayout layoutSheep = new LinearLayout(context);
+        TextView textSheep = new TextView(context);
 
-        text.setText(sheep.getName());
-        text.setTextColor(0xffeeeeee);
-        text.setBackgroundColor(0xff000000);
-        layout.addView(text);
-
-        return layout;
+        textSheep.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                                0.6f));
+        textSheep.setText(name);
+        textSheep.setTextColor(0xffeeeeee);
+        textSheep.setBackgroundColor(0xff000000);
+        layoutSheep.addView(textSheep);
+        return populateSheep(context, layoutSheep, count);
     }
 
     /**
@@ -55,17 +68,21 @@ public class MainView {
      * @param context the application context
      * @return an empty layout containing a sheep to be filled
      */
-    public static LinearLayout newEmptySheep(Context context)
-    {
+    public static LinearLayout newEmptySheep(Context context) {
         LinearLayout layoutSheep = new LinearLayout(context);
         EditText editSheep = new EditText(context);
 
         editSheep.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                 ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                 0.6f));
+        layoutSheep.addView(editSheep);
+        return populateSheep(context, layoutSheep, 0);
+    }
+
+    private static LinearLayout populateSheep(Context context, LinearLayout layoutSheep, final int count)
+    {
 
         layoutSheep.setOrientation(LinearLayout.HORIZONTAL);
-        layoutSheep.addView(editSheep);
         layoutSheep.addView(new Button(context) { // MINUS BUTTON
             @Override
             public void setOnClickListener(OnClickListener l) {
@@ -87,7 +104,7 @@ public class MainView {
         layoutSheep.addView(new TextView(context) { // COUNTER
             @Override
             public void setText(CharSequence text, BufferType type) {
-                super.setText("0", type);
+                super.setText(new Integer(count).toString(), type);
             }
 
             @Override
