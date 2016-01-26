@@ -42,6 +42,16 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:id="@+id/layoutSheeps">
+                <Button
+                        android:textAlignment="center"
+                        android:background="@color/colorPrimaryDark"
+                        android:textColor="@color/colorText"
+                        android:visibility="gone"
+                        android:onClick="onClickAddButton"
+                        android:text="+"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/buttonAdd"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

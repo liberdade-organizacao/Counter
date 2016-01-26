@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Sheep> sheeps = controller.getSheeps();
         Context context = getApplicationContext();
 
-        if (sheeps.size() != 0) {
-            layoutSheeps.removeAllViews();
+        if (sheeps.size() > 1) {
+            MainView.removeEveryOtherView(layoutSheeps);
             MainView.populateSheeps(context, layoutSheeps, sheeps);
         } else {
             TextView tt = new TextView(context);
@@ -84,11 +84,14 @@ public class MainActivity extends AppCompatActivity {
     /* Exiting edit mode */
     private void exitEditing()
     {
-        final Context context = getApplicationContext();
+        Context context = getApplicationContext();
         LinearLayout layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
-        int howMany = layoutSheeps.getChildCount();
+        Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
 
-        layoutSheeps.removeViewAt(howMany-1);
+        /* Change button's icon */
+        // TODO: change the icon to an "add" sign
+
+        buttonAdd.setVisibility(View.GONE);
         controller.setSheeps(MainView.extractSheeps(context, layoutSheeps));
     }
 
@@ -98,38 +101,36 @@ public class MainActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         LinearLayout layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
         ArrayList<Sheep> sheeps = controller.getSheeps();
+        Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
 
         /* Change button's icon */
         // TODO: change the icon to a "right" sign
 
+        buttonAdd.setVisibility(View.VISIBLE);
+
         if (sheeps.size() == 0) {
-            layoutSheeps.removeAllViews();
+            layoutSheeps.removeViewAt(layoutSheeps.getChildCount()-1);
             addEmptySheep(context);
         }
-
-        layoutSheeps.addView(new Button(context) {
-            @Override
-            public void setOnClickListener(OnClickListener l) {
-                addEmptySheep(getApplicationContext());
-            }
-
-            @Override
-            public void setText(CharSequence text, BufferType type) {
-                super.setText("+", type);
-            }
-        });
     }
 
+    /**
+     * Callback to "+" button
+     * @param view
+     */
+    public void onClickAddButton(View view) {
+        addEmptySheep(getApplicationContext());
+    }
+
+    /**
+     * Adds an empty sheep to the sheeps layout
+     * @param context the application's context
+     * @param layoutSheeps the sheeps layout
+     * @return layoutSheeps
+     */
     private LinearLayout addEmptySheep(Context context, LinearLayout layoutSheeps)
     {
-        LinearLayout layoutSheep = MainView.newEmptySheep(context);
-        int howMany = layoutSheeps.getChildCount();
-
-        if (howMany == 0) {
-            ++howMany;
-        }
-
-        layoutSheeps.addView(layoutSheep, howMany-1);
+        layoutSheeps.addView(MainView.newEmptySheep(context));
         return layoutSheeps;
     }
 
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout ls = (LinearLayout) findViewById(R.id.layoutSheeps);
         addEmptySheep(context, ls);
         Toast.makeText(MainActivity.this,
-                       new Integer(ls.getChildCount()).toString(),
+                       new Integer(ls.getChildCount()-1).toString(),
                        Toast.LENGTH_SHORT).show();
         return ls;
     }
@@ -164,4 +165,6 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         isRemoving = !isRemoving;
     }
+
+
 }

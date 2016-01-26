@@ -42,11 +42,11 @@ public class MainView {
     }
 
     /**
-     * adds a sheep with the defined information
-     * @param context the application's context
-     * @param name the sheep's name
-     * @param count the sheep's count
-     * @return a layout containing the specified sheep
+     * Adds a sheep with the defined information
+     * @param context The application's context
+     * @param name The sheep's name
+     * @param count The sheep's count
+     * @return A layout containing the specified sheep
      */
     public static LinearLayout newSheep(Context context, String name, int count)
     {
@@ -147,7 +147,7 @@ public class MainView {
         ArrayList<Sheep> sheeps = new ArrayList<>();
         int howMany = layoutSheeps.getChildCount();
 
-        for (int i = 0; i < howMany; ++i)
+        for (int i = 1; i < howMany; ++i)
         {
             LinearLayout layoutSheep = (LinearLayout) layoutSheeps.getChildAt(i);
             String name = getNameFromLayout(layoutSheep);
@@ -184,5 +184,15 @@ public class MainView {
     {
         TextView tv = (TextView) ls.getChildAt(2);
         return Integer.parseInt(tv.getText().toString());
+    }
+
+    /**
+     * Removes every view but the desired button from the Sheeps layout
+     * @param layoutSheeps
+     */
+    public static void removeEveryOtherView(LinearLayout layoutSheeps) {
+        for (int i = 1; i < layoutSheeps.getChildCount(); i++) {
+            layoutSheeps.removeViewAt(1);
+        }
     }
 }
