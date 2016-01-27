@@ -10,9 +10,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import br.eng.crisjr.sheep.Model.Sheep;
+import br.eng.crisjr.sheep.R;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by cris on 23/01/2016.
@@ -70,9 +72,9 @@ public class MainView {
         LinearLayout layoutSheep = new LinearLayout(context);
         EditText textSheep = new EditText(context);
 
-        textSheep.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                0.6f));
+        textSheep.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                                0.6f));
         textSheep.setText(name);
         textSheep.setTextColor(0xffeeeeee);
         textSheep.setBackgroundColor(0xff000000);
@@ -92,7 +94,7 @@ public class MainView {
         LinearLayout layoutSheep = new LinearLayout(context);
         TextView textSheep = new TextView(context);
 
-        textSheep.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        textSheep.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                 ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                 0.6f));
         textSheep.setText(name);
@@ -125,60 +127,30 @@ public class MainView {
      * @param count counting measure
      * @return the filled layoutSheep
      */
-    private static LinearLayout populateSheep(Context context, LinearLayout layoutSheep, final int count)
+    private static LinearLayout populateSheep(Context context, LinearLayout layoutSheep, int count)
     {
+        TextView textCounter = new TextView(context);
+        Button buttonMinus = new Button(context);
+        Button buttonPlus = new Button(context);
+
+        buttonMinus.setText("-");
+        buttonMinus.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                                  ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                                  0.1f));
+        textCounter.setText(new Integer(count).toString());
+        textCounter.setTextColor(0xffeeeeee);
+        textCounter.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                                  ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                                  0.2f));
+        buttonPlus.setText("+");
+        buttonPlus.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                                  ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                                  0.1f));
 
         layoutSheep.setOrientation(LinearLayout.HORIZONTAL);
-        layoutSheep.addView(new Button(context) { // MINUS BUTTON
-            @Override
-            public void setOnClickListener(OnClickListener l) {
-                super.setOnClickListener(l); // TODO: implement decrement
-            }
-
-            @Override
-            public void setText(CharSequence text, BufferType type) {
-                super.setText("-", type);
-            }
-
-            @Override
-            public void setLayoutParams(ViewGroup.LayoutParams params) {
-                super.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                    0.1f));
-            }
-        });
-        layoutSheep.addView(new TextView(context) { // COUNTER
-            @Override
-            public void setText(CharSequence text, BufferType type) {
-                super.setText(new Integer(count).toString(), type);
-            }
-
-            @Override
-            public void setLayoutParams(ViewGroup.LayoutParams params) {
-                super.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                    0.2f));
-            }
-        });
-        layoutSheep.addView(new Button(context) { // PLUS BUTTON
-            @Override
-            public void setOnClickListener(OnClickListener l) {
-                super.setOnClickListener(l); // TODO: implement increment
-            }
-
-            @Override
-            public void setText(CharSequence text, BufferType type) {
-                super.setText("+", type);
-            }
-
-            @Override
-            public void setLayoutParams(ViewGroup.LayoutParams params) {
-                super.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                    0.1f));
-            }
-        });
-
+        layoutSheep.addView(buttonMinus);
+        layoutSheep.addView(textCounter);
+        layoutSheep.addView(buttonPlus);
         return layoutSheep;
     }
 
@@ -224,7 +196,7 @@ public class MainView {
 
     /**
      * Removes every view but the desired button from the Sheeps layout
-     * @param layoutSheeps
+     * @param layoutSheeps layout to be dismembered
      */
     public static void removeEveryOtherView(LinearLayout layoutSheeps) {
         while (layoutSheeps.getChildCount() > 1)
