@@ -33,6 +33,7 @@ public class MainView
             layout.addView(newSheep(context, name, count));
         }
 
+        layoutSheeps = layout;
         return layout;
     }
 
@@ -50,6 +51,7 @@ public class MainView
             layout.addView(newSheepToFill(context, sheep.getName(), sheep.getCount()));
         }
 
+        layoutSheeps = layout;
         return layout;
     }
 
@@ -122,26 +124,24 @@ public class MainView
      */
     private static LinearLayout populateSheep(Context context, LinearLayout layoutSheep, int count)
     {
+        Random random = new Random();
         TextView textCounter = new TextView(context);
-        Button buttonMinus = new Button(context) {
-            @Override
-            public void setOnClickListener(OnClickListener l) { // TODO: write "-" button callback
-                super.setOnClickListener(l);
-            }
-        };
-        Button buttonPlus = new Button(context) { // TODO: write "+" button callback
-            @Override
-            public void setOnClickListener(OnClickListener l) {
-                super.setOnClickListener(l);
-            }
-        };
+        Button buttonMinus = new Button(context);
+        Button buttonPlus = new Button(context);
 
         buttonMinus.setText("-");
         buttonMinus.setBackgroundColor(0xff000000);
         buttonMinus.setTextColor(0xffeeeeee);
+        buttonMinus.setId(random.nextInt());
         buttonMinus.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                   ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                   0.1f));
+        buttonMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainView.count((Button) v, -1);
+            }
+        });
         textCounter.setText(new Integer(count).toString());
         textCounter.setTextColor(0xffeeeeee);
 //        textCounter.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -151,15 +151,31 @@ public class MainView
         buttonPlus.setText("+");
         buttonPlus.setBackgroundColor(0xff000000);
         buttonPlus.setTextColor(0xffeeeeee);
+        buttonPlus.setId(random.nextInt());
         buttonPlus.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                   ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                   0.1f));
+        buttonPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainView.count((Button) v, +1);
+            }
+        });
 
         layoutSheep.setOrientation(LinearLayout.HORIZONTAL);
         layoutSheep.addView(buttonMinus);
         layoutSheep.addView(textCounter);
         layoutSheep.addView(buttonPlus);
         return layoutSheep;
+    }
+
+    private static void count(Button button, int step)
+    {
+        int index = getSheepIndexWithButton(button);
+        LinearLayout sheep = (LinearLayout) layoutSheeps.getChildAt(index);
+        TextView tv = (TextView) sheep.getChildAt(2);
+        int count = Integer.parseInt(tv.getText().toString());
+        tv.setText(new Integer(count + step).toString());
     }
 
     /**
