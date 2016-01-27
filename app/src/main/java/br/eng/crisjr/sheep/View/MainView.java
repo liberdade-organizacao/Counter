@@ -236,12 +236,12 @@ public class MainView {
                                             LinearLayout ls,
                                             ArrayList<Sheep> sheeps)
     {
-        layoutSheeps = ls;
-
         for (Sheep sheep: sheeps)
         {
-            layoutSheeps.addView(createFilledSheep(context, sheep));
+            ls.addView(createFilledSheep(context, sheep));
         }
+
+        layoutSheeps = ls;
     }
 
     private static LinearLayout createFilledSheep(Context context, Sheep sheep)

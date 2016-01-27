@@ -14,7 +14,7 @@ import br.eng.crisjr.sheep.Model.Sheep;
 import br.eng.crisjr.sheep.View.MainView;
 
 public class MainActivity extends AppCompatActivity {
-    private Sheeps controller = new Sheeps();
+    private Sheeps controller = new Sheeps(); // TODO: decouple controller from main activity
     private Typeface fontIcon = null;
     private boolean isEditing = false;
     private boolean isRemoving = false;
