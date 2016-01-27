@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private Typeface fontIcon = null;
     private boolean isEditing = false;
     private boolean isRemoving = false;
+    private LinearLayout layoutSheeps = null;
+    private Context context = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +68,12 @@ public class MainActivity extends AppCompatActivity {
     public void onClickEditButton(View view)
     {
         if (isRemoving) {
+            exitRemoving();
             isRemoving = !isRemoving;
         }
 
         if (isEditing) {
             exitEditing();
-            updateSheeps();
         }
         else {
             enterEditing();
@@ -83,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
     /* Exiting edit mode */
     private void exitEditing()
     {
-        Context context = getApplicationContext();
-        LinearLayout layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
+        context = getApplicationContext();
+        layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
         Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
 
         /* Change button's icon */
@@ -93,13 +95,14 @@ public class MainActivity extends AppCompatActivity {
         buttonAdd.setVisibility(View.GONE);
         controller.setSheeps(MainView.extractSheeps(context, layoutSheeps));
         MainView.removeEveryOtherView(layoutSheeps);
+        updateSheeps();
     }
 
     /* Entering edit mode */
     private void enterEditing()
     {
-        Context context = getApplicationContext();
-        LinearLayout layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
+        context = getApplicationContext();
+        layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
         ArrayList<Sheep> sheeps = controller.getSheeps();
         Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
 
@@ -133,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private LinearLayout addEmptySheep(Context context, LinearLayout layoutSheeps)
     {
-        layoutSheeps.addView(MainView.newEmptySheep(context));
+        layoutSheeps.addView(MainView.newSheep(context));
         return layoutSheeps;
     }
 
@@ -153,8 +156,6 @@ public class MainActivity extends AppCompatActivity {
      */
     public void onClickRemoveButton(View view)
     {
-        String text = "Not removing";
-
         if (isEditing) {
             exitEditing();
             isEditing = !isEditing;
@@ -162,12 +163,38 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: implement logic to remove button
         if (!isRemoving) {
-            text = "Removing now";
+            enterRemoving();
+        }
+        else {
+            exitRemoving();
         }
 
-        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         isRemoving = !isRemoving;
     }
 
+    private void enterRemoving()
+    {
+        context = getApplicationContext();
+        layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
+        ArrayList<Sheep> sheeps = controller.getSheeps();
 
+        MainView.removeEveryOtherView(layoutSheeps);
+
+        if (sheeps.size() == 0) {
+            isRemoving = !isRemoving;
+            exitRemoving();
+        }
+        else {
+            MainView.populateFilledSheeps(context, layoutSheeps, sheeps);
+        }
+    }
+
+    private void exitRemoving()
+    {
+        context = getApplicationContext();
+        layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
+        controller.setSheeps(MainView.extractSheeps(context, layoutSheeps));
+        MainView.removeEveryOtherView(layoutSheeps);
+        updateSheeps();
+    }
 }

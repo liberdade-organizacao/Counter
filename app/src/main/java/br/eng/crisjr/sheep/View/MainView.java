@@ -1,7 +1,9 @@
 package br.eng.crisjr.sheep.View;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,7 +111,7 @@ public class MainView {
      * @param context the application context
      * @return an empty layout containing a sheep to be filled
      */
-    public static LinearLayout newEmptySheep(Context context) {
+    public static LinearLayout newSheep(Context context) {
         LinearLayout layoutSheep = new LinearLayout(context);
         EditText editSheep = new EditText(context);
 
@@ -134,15 +136,20 @@ public class MainView {
         Button buttonPlus = new Button(context);
 
         buttonMinus.setText("-");
+        buttonMinus.setBackgroundColor(0xff000000);
+        buttonMinus.setTextColor(0xffeeeeee);
         buttonMinus.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                   ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                   0.1f));
         textCounter.setText(new Integer(count).toString());
         textCounter.setTextColor(0xffeeeeee);
+//        textCounter.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         textCounter.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                   ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                   0.2f));
         buttonPlus.setText("+");
+        buttonPlus.setBackgroundColor(0xff000000);
+        buttonPlus.setTextColor(0xffeeeeee);
         buttonPlus.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                   ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                   0.1f));
@@ -165,7 +172,7 @@ public class MainView {
         ArrayList<Sheep> sheeps = new ArrayList<>();
         int howMany = layoutSheeps.getChildCount();
 
-        for (int i = 1; i < howMany; ++i)
+        for (int i = 0; i < howMany; ++i)
         {
             LinearLayout layoutSheep = (LinearLayout) layoutSheeps.getChildAt(i);
             String name = getNameFromLayout(layoutSheep);
@@ -184,8 +191,18 @@ public class MainView {
 
     private static String getNameFromLayout(LinearLayout ls)
     {
-        EditText edit = (EditText) ls.getChildAt(0);
-        return edit.getText().toString();
+        String outlet = null;
+
+        try {
+            EditText edit = (EditText) ls.getChildAt(0);
+            outlet = edit.getText().toString();
+        }
+        catch (ClassCastException cc) {
+            TextView text = (TextView) ls.getChildAt(0);
+            outlet = text.getText().toString();
+        }
+
+        return outlet;
     }
 
     private static int getCountFromLayout(LinearLayout ls)
@@ -198,10 +215,49 @@ public class MainView {
      * Removes every view but the desired button from the Sheeps layout
      * @param layoutSheeps layout to be dismembered
      */
-    public static void removeEveryOtherView(LinearLayout layoutSheeps) {
-        while (layoutSheeps.getChildCount() > 1)
+    public static void removeEveryOtherView(LinearLayout layoutSheeps)
+    {
+        while (layoutSheeps.getChildCount() > 0)
         {
-            layoutSheeps.removeViewAt(1);
+            layoutSheeps.removeViewAt(0);
         }
+    }
+
+    /**
+     * Creates a sheeps' layout ready for remotion
+     * @param context application's context
+     * @param layoutSheeps layout to be edited
+     * @param sheeps arraylist of sheeps
+     */
+    public static void populateFilledSheeps(Context context,
+                                            LinearLayout layoutSheeps,
+                                            ArrayList<Sheep> sheeps)
+    {
+        for (Sheep sheep: sheeps)
+        {
+            layoutSheeps.addView(createFilledSheep(context, sheep));
+        }
+    }
+
+    private static LinearLayout createFilledSheep(Context context, Sheep sheep)
+    {
+        LinearLayout layout = new LinearLayout(context);
+        TextView tvn = new TextView(context);
+        TextView tvc = new TextView(context);
+        Button bt = new Button(context);
+
+        tvn.setText(sheep.getName());
+        tvn.setTextColor(0xffeeeeee);
+        tvc.setText(new Integer(sheep.getCount()).toString());
+        tvc.setTextColor(0xffeeeeee);
+        bt.setText("Delete");
+        bt.setBackgroundColor(0xff000000);
+        bt.setTextColor(0xfff93822);
+
+        layout.addView(tvn);
+        layout.addView(bt);
+        layout.addView(tvc);
+
+        return layout;
     }
 }
