@@ -41,4 +41,11 @@ public class Sheeps {
         this.sheeps.remove(index);
         return sheep;
     }
+
+    public Sheep createSheep(String name, int count) {
+        Sheep sheep = new Sheep();
+        sheep.setName(name);
+        sheep.setCount(count);
+        return sheep;
+    }
 }

@@ -14,7 +14,6 @@ import br.eng.crisjr.sheep.Model.Sheep;
 import br.eng.crisjr.sheep.View.MainView;
 
 public class MainActivity extends AppCompatActivity {
-    private Sheeps controller = new Sheeps(); // TODO: decouple controller from main activity
     private Typeface fontIcon = null;
     private boolean isEditing = false;
     private boolean isRemoving = false;
@@ -22,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private Context context = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -43,12 +43,12 @@ public class MainActivity extends AppCompatActivity {
     private void updateSheeps()
     {
         LinearLayout layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
-        ArrayList<Sheep> sheeps = controller.getSheeps();
         Context context = getApplicationContext();
 
-        if (sheeps.size() > 0) {
-            MainView.populateSheeps(context, layoutSheeps, sheeps);
-        } else {
+        if (MainView.getSheepSize() > 0) {
+            MainView.populateSheeps(context, layoutSheeps);
+        }
+        else {
             TextView tt = new TextView(context);
             tt.setText(R.string.empty_sheeps);
             tt.setTextColor(0xffeeeeee);
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         // TODO: change the icon to an "add" sign
 
         buttonAdd.setVisibility(View.GONE);
-        controller.setSheeps(MainView.extractSheeps(context, layoutSheeps));
+        MainView.extractSheeps(context, layoutSheeps);
         MainView.removeEveryOtherView(layoutSheeps);
         updateSheeps();
     }
@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
     {
         context = getApplicationContext();
         layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
-        ArrayList<Sheep> sheeps = controller.getSheeps();
         Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
 
         /* Change button's icon */
@@ -109,11 +108,11 @@ public class MainActivity extends AppCompatActivity {
         buttonAdd.setVisibility(View.VISIBLE);
         MainView.removeEveryOtherView(layoutSheeps);
 
-        if (sheeps.size() == 0) {
+        if (MainView.getSheepSize() == 0) {
             addEmptySheep(context, layoutSheeps);
         }
         else {
-            MainView.populateEmptySheeps(context, layoutSheeps, sheeps);
+            MainView.populateEmptySheeps(context, layoutSheeps);
         }
     }
 
@@ -141,9 +140,6 @@ public class MainActivity extends AppCompatActivity {
     {
         LinearLayout ls = (LinearLayout) findViewById(R.id.layoutSheeps);
         addEmptySheep(context, ls);
-        /*Toast.makeText(MainActivity.this,
-                       new Integer(ls.getChildCount()-1).toString(),
-                       Toast.LENGTH_SHORT).show();*/
         return ls;
     }
 
@@ -173,16 +169,14 @@ public class MainActivity extends AppCompatActivity {
     {
         context = getApplicationContext();
         layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
-        ArrayList<Sheep> sheeps = controller.getSheeps();
-
         MainView.removeEveryOtherView(layoutSheeps);
 
-        if (sheeps.size() == 0) {
+        if (MainView.getSheepSize() == 0) {
             isRemoving = !isRemoving;
             exitRemoving();
         }
         else {
-            MainView.populateFilledSheeps(context, layoutSheeps, sheeps);
+            MainView.populateFilledSheeps(context, layoutSheeps);
         }
     }
 
@@ -190,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
     {
         context = getApplicationContext();
         layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
-        controller.setSheeps(MainView.extractSheeps(context, layoutSheeps));
+        MainView.extractSheeps(context, layoutSheeps);
         MainView.removeEveryOtherView(layoutSheeps);
         updateSheeps();
     }

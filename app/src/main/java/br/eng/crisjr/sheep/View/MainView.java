@@ -2,10 +2,8 @@ package br.eng.crisjr.sheep.View;
 
 import android.content.Context;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
+import br.eng.crisjr.sheep.Controller.Sheeps;
 import br.eng.crisjr.sheep.Model.Sheep;
 import java.util.ArrayList;
 import java.util.Random;
@@ -13,21 +11,21 @@ import java.util.Random;
 /**
  * View class for the main activity.
  */
-public class MainView {
+public class MainView
+{
     private static LinearLayout layoutSheeps = null;
+    private static Sheeps controller = new Sheeps();
 
     /**
      * Fills the sheeps layout with sheep
      * @param context application context
      * @param layout layout that will have the sheep added to
-     * @param sheeps list of sheep
      * @return layout filled with sheep
      */
     public static LinearLayout populateSheeps(Context context,
-                                              LinearLayout layout,
-                                              ArrayList<Sheep> sheeps)
+                                              LinearLayout layout)
     {
-        for (Sheep sheep: sheeps)
+        for (Sheep sheep: controller.getSheeps())
         {
             String name = sheep.getName();
             int count = sheep.getCount();
@@ -41,14 +39,13 @@ public class MainView {
      * Fills the layout with sheeps ready to be changed
      * @param context application's context
      * @param layout the layout to be filled
-     * @param sheeps the arraylist of sheeps
      * @return the filled layout
      */
     public static LinearLayout populateEmptySheeps(Context context,
-                                                   LinearLayout layout,
-                                                   ArrayList<Sheep> sheeps)
+                                                   LinearLayout layout)
     {
-        for (Sheep sheep : sheeps) {
+        for (Sheep sheep : controller.getSheeps())
+        {
             layout.addView(newSheepToFill(context, sheep.getName(), sheep.getCount()));
         }
 
@@ -180,15 +177,10 @@ public class MainView {
             LinearLayout layoutSheep = (LinearLayout) layoutSheeps.getChildAt(i);
             String name = getNameFromLayout(layoutSheep);
             int count = getCountFromLayout(layoutSheep);
-
-            if (name.length() >= 1) {
-                Sheep sheep = new Sheep();
-                sheep.setName(name);
-                sheep.setCount(count);
-                sheeps.add(sheep);
-            }
+            sheeps.add(controller.createSheep(name, count));
         }
 
+        controller.setSheeps(sheeps);
         return sheeps;
     }
 
@@ -230,13 +222,11 @@ public class MainView {
      * Creates a sheeps' layout ready for remotion
      * @param context application's context
      * @param ls layout to be edited
-     * @param sheeps arraylist of sheeps
      */
     public static void populateFilledSheeps(Context context,
-                                            LinearLayout ls,
-                                            ArrayList<Sheep> sheeps)
+                                            LinearLayout ls)
     {
-        for (Sheep sheep: sheeps)
+        for (Sheep sheep: controller.getSheeps())
         {
             ls.addView(createFilledSheep(context, sheep));
         }
@@ -253,7 +243,10 @@ public class MainView {
         Button bt = new Button(context) { // TODO: write "delete" button callback
             @Override
             public void setOnClickListener(OnClickListener l) {
-                MainView.deleteSheep(this);
+                Toast.makeText(getContext(),
+                               new Integer(layoutSheeps.getChildCount()).toString(),
+                               Toast.LENGTH_SHORT).show();
+                MainView.deleteSheepWithButton(this);
             }
         };
 
@@ -281,23 +274,34 @@ public class MainView {
         return layout;
     }
 
-    private static void deleteSheep(Button button)
+    private static void deleteSheepWithButton(Button button)
     {
-        int index = getSheepIndex(button);
+        int index = getSheepIndexWithButton(button);
         layoutSheeps.removeViewAt(index);
     }
 
-    private static int getSheepIndex(Button toFind)
+    private static int getSheepIndexWithButton(Button toFind)
     {
-        for (int i = 0; i < layoutSheeps.getChildCount(); i++)
+        int result = -1;
+
+        for (int i = 0; i < layoutSheeps.getChildCount() && result < 0; i++)
         {
             LinearLayout sheep = (LinearLayout) layoutSheeps.getChildAt(i);
             Button current = (Button) sheep.getChildAt(1);
             if (current.getId() == toFind.getId()) {
-                return i;
+                result = i;
             }
         }
 
-        return -1;
+        return result;
+    }
+
+    /**
+     * Gets how many sheep are stored right now.
+     * @return number of sheep stored.
+     */
+    public static int getSheepSize()
+    {
+        return controller.getSheeps().size();
     }
 }
