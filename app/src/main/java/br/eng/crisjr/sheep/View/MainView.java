@@ -169,6 +169,11 @@ public class MainView
         return layoutSheep;
     }
 
+    /**
+     * Apply a step to a counter
+     * @param button the button that will serve as
+     * @param step
+     */
     private static void count(Button button, int step)
     {
         int index = getSheepIndexWithButton(button);
@@ -305,6 +310,15 @@ public class MainView
             Button current = (Button) sheep.getChildAt(1);
             if (current.getId() == toFind.getId()) {
                 result = i;
+            }
+            try {
+                current = (Button) sheep.getChildAt(3);
+                if (current.getId() == toFind.getId()) {
+                    result = i;
+                }
+            }
+            catch (NullPointerException bacon) {
+
             }
         }
 
