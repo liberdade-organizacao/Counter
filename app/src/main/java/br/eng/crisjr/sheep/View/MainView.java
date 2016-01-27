@@ -1,6 +1,7 @@
 package br.eng.crisjr.sheep.View;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import br.eng.crisjr.sheep.Controller.Sheeps;
@@ -240,15 +241,7 @@ public class MainView
         LinearLayout layout = new LinearLayout(context);
         TextView tvn = new TextView(context);
         TextView tvc = new TextView(context);
-        Button bt = new Button(context) { // TODO: write "delete" button callback
-            @Override
-            public void setOnClickListener(OnClickListener l) {
-                Toast.makeText(getContext(),
-                               new Integer(layoutSheeps.getChildCount()).toString(),
-                               Toast.LENGTH_SHORT).show();
-                MainView.deleteSheepWithButton(this);
-            }
-        };
+        Button bt = new Button(context);
 
         tvn.setText(sheep.getName());
         tvn.setTextColor(0xffeeeeee);
@@ -259,6 +252,12 @@ public class MainView
         bt.setTextColor(0xfff93822);
         bt.setId(random.nextInt());
         bt.setClickable(true);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainView.deleteSheepWithButton((Button) v);
+            }
+        });
 
         tvn.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, 0.6f));
