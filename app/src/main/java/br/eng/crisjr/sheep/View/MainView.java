@@ -30,15 +30,54 @@ public class MainView {
                                               LinearLayout layout,
                                               ArrayList<Sheep> sheeps)
     {
-        for (int index = 0; index < sheeps.size(); ++index)
+        for (Sheep sheep: sheeps)
         {
-            Sheep sheep = sheeps.get(index);
             String name = sheep.getName();
             int count = sheep.getCount();
             layout.addView(newSheep(context, name, count));
         }
 
         return layout;
+    }
+
+    /**
+     * Fills the layout with sheeps ready to be changed
+     * @param context application's context
+     * @param layout the layout to be filled
+     * @param sheeps the arraylist of sheeps
+     * @return the filled layout
+     */
+    public static LinearLayout populateEmptySheeps(Context context,
+                                                   LinearLayout layout,
+                                                   ArrayList<Sheep> sheeps)
+    {
+        for (Sheep sheep : sheeps) {
+            layout.addView(newSheepToFill(context, sheep.getName(), sheep.getCount()));
+        }
+
+        return layout;
+    }
+
+    /**
+     * Adds a sheep with the defined information for filling
+     * @param context The application's context
+     * @param name The sheep's name
+     * @param count The sheep's count
+     * @return A layout containing the specified sheep
+     */
+    public static LinearLayout newSheepToFill(Context context, String name, int count)
+    {
+        LinearLayout layoutSheep = new LinearLayout(context);
+        EditText textSheep = new EditText(context);
+
+        textSheep.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                0.6f));
+        textSheep.setText(name);
+        textSheep.setTextColor(0xffeeeeee);
+        textSheep.setBackgroundColor(0xff000000);
+        layoutSheep.addView(textSheep);
+        return populateSheep(context, layoutSheep, count);
     }
 
     /**
@@ -79,6 +118,13 @@ public class MainView {
         return populateSheep(context, layoutSheep, 0);
     }
 
+    /**
+     * Creates the rest of a sheep, regardless of its type
+     * @param context application's context
+     * @param layoutSheep sheep's layout
+     * @param count counting measure
+     * @return the filled layoutSheep
+     */
     private static LinearLayout populateSheep(Context context, LinearLayout layoutSheep, final int count)
     {
 
@@ -153,10 +199,12 @@ public class MainView {
             String name = getNameFromLayout(layoutSheep);
             int count = getCountFromLayout(layoutSheep);
 
-            Sheep sheep = new Sheep();
-            sheep.setName(name);
-            sheep.setCount(count);
-            sheeps.add(sheep);
+            if (name.length() >= 1) {
+                Sheep sheep = new Sheep();
+                sheep.setName(name);
+                sheep.setCount(count);
+                sheeps.add(sheep);
+            }
         }
 
         return sheeps;
@@ -164,20 +212,8 @@ public class MainView {
 
     private static String getNameFromLayout(LinearLayout ls)
     {
-        String name = null;
-        View view = ls.getChildAt(0);
-
-        try {
-            TextView text = (TextView) view;
-            name = text.getText().toString();
-
-        }
-        catch (ClassCastException cc) {
-            EditText edit = (EditText) view;
-            name = edit.getText().toString();
-        }
-
-        return name;
+        EditText edit = (EditText) ls.getChildAt(0);
+        return edit.getText().toString();
     }
 
     private static int getCountFromLayout(LinearLayout ls)
@@ -191,7 +227,8 @@ public class MainView {
      * @param layoutSheeps
      */
     public static void removeEveryOtherView(LinearLayout layoutSheeps) {
-        for (int i = 1; i < layoutSheeps.getChildCount(); i++) {
+        while (layoutSheeps.getChildCount() > 1)
+        {
             layoutSheeps.removeViewAt(1);
         }
     }

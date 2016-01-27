@@ -47,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Sheep> sheeps = controller.getSheeps();
         Context context = getApplicationContext();
 
-        if (sheeps.size() > 1) {
-            MainView.removeEveryOtherView(layoutSheeps);
+        if (sheeps.size() > 0) {
             MainView.populateSheeps(context, layoutSheeps, sheeps);
         } else {
             TextView tt = new TextView(context);
@@ -93,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         buttonAdd.setVisibility(View.GONE);
         controller.setSheeps(MainView.extractSheeps(context, layoutSheeps));
+        MainView.removeEveryOtherView(layoutSheeps);
     }
 
     /* Entering edit mode */
@@ -107,10 +107,13 @@ public class MainActivity extends AppCompatActivity {
         // TODO: change the icon to a "right" sign
 
         buttonAdd.setVisibility(View.VISIBLE);
+        MainView.removeEveryOtherView(layoutSheeps);
 
         if (sheeps.size() == 0) {
-            layoutSheeps.removeViewAt(layoutSheeps.getChildCount()-1);
-            addEmptySheep(context);
+            addEmptySheep(context, layoutSheeps);
+        }
+        else {
+            MainView.populateEmptySheeps(context, layoutSheeps, sheeps);
         }
     }
 
@@ -138,9 +141,9 @@ public class MainActivity extends AppCompatActivity {
     {
         LinearLayout ls = (LinearLayout) findViewById(R.id.layoutSheeps);
         addEmptySheep(context, ls);
-        Toast.makeText(MainActivity.this,
+        /*Toast.makeText(MainActivity.this,
                        new Integer(ls.getChildCount()-1).toString(),
-                       Toast.LENGTH_SHORT).show();
+                       Toast.LENGTH_SHORT).show();*/
         return ls;
     }
 
