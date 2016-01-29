@@ -1,6 +1,7 @@
 package br.eng.crisjr.sheep;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +14,9 @@ import br.eng.crisjr.sheep.Controller.Sheeps;
 import br.eng.crisjr.sheep.Model.Sheep;
 import br.eng.crisjr.sheep.View.MainView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity
+extends AppCompatActivity
+{
     private Typeface fontIcon = null;
     private boolean isEditing = false;
     private boolean isRemoving = false;
@@ -27,12 +30,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         /* change typefaces */
-        // TODO: discover how to change app's typeface
-//        fontIcon = Typeface.createFromAsset(getAssets(), "open-iconic.ttf");
-//        Button btn = (Button) findViewById(R.id.buttonEdit);
-//        btn.setTypeface(fontIcon); btn.setText("\uE0DB");
-//        btn = (Button) findViewById(R.id.buttonRemove);
-//        btn.setTypeface(fontIcon); btn.setText("\uE0AA");
+        fontIcon = Typeface.createFromAsset(getResources().getAssets(), "open-iconic.ttf");
+        Button btn = (Button) findViewById(R.id.buttonEdit);
+        btn.setTypeface(fontIcon); btn.setText("\uE0AA");
+        btn = (Button) findViewById(R.id.buttonRemove);
+        btn.setTypeface(fontIcon); btn.setText("\uE0DB");
 
         updateSheeps();
     }
