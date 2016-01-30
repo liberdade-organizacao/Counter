@@ -129,7 +129,8 @@ public class MainView
         Button buttonMinus = new Button(context);
         Button buttonPlus = new Button(context);
 
-        buttonMinus.setText("-");
+        buttonMinus.setTypeface(IconicConstants.getTypeface());
+        buttonMinus.setText(IconicConstants.LEFT);
         buttonMinus.setBackgroundColor(0xff000000);
         buttonMinus.setTextColor(0xffeeeeee);
         buttonMinus.setId(random.nextInt());
@@ -148,7 +149,8 @@ public class MainView
         textCounter.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                   ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                   0.2f));
-        buttonPlus.setText("+");
+        buttonPlus.setTypeface(IconicConstants.getTypeface());
+        buttonPlus.setText(IconicConstants.RIGHT);
         buttonPlus.setBackgroundColor(0xff000000);
         buttonPlus.setTextColor(0xffeeeeee);
         buttonPlus.setId(random.nextInt());

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import br.eng.crisjr.sheep.Controller.Sheeps;
 import br.eng.crisjr.sheep.Model.Sheep;
+import br.eng.crisjr.sheep.View.IconicConstants;
 import br.eng.crisjr.sheep.View.MainView;
 
 public class MainActivity
@@ -31,10 +32,13 @@ extends AppCompatActivity
 
         /* change typefaces */
         fontIcon = Typeface.createFromAsset(getResources().getAssets(), "open-iconic.ttf");
+        IconicConstants.setTypeface(fontIcon);
         Button btn = (Button) findViewById(R.id.buttonEdit);
-        btn.setTypeface(fontIcon); btn.setText("\uE0AA");
+        btn.setTypeface(fontIcon); btn.setText(IconicConstants.ADD);
         btn = (Button) findViewById(R.id.buttonRemove);
-        btn.setTypeface(fontIcon); btn.setText("\uE0DB");
+        btn.setTypeface(fontIcon); btn.setText(IconicConstants.DELETE);
+        btn = (Button) findViewById(R.id.buttonAdd);
+        btn.setTypeface(fontIcon); btn.setText(IconicConstants.ADD);
 
         updateSheeps();
     }
@@ -86,11 +90,10 @@ extends AppCompatActivity
     {
         context = getApplicationContext();
         layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
+        Button buttonEdit = (Button) findViewById(R.id.buttonEdit);
         Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
 
-        /* Change button's icon */
-        // TODO: change the icon to an "add" sign
-
+        buttonEdit.setText(IconicConstants.ADD);
         buttonAdd.setVisibility(View.GONE);
         MainView.extractSheeps(context, layoutSheeps);
         MainView.removeEveryOtherView(layoutSheeps);
@@ -103,11 +106,10 @@ extends AppCompatActivity
         context = getApplicationContext();
         layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
         Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
-
-        /* Change button's icon */
-        // TODO: change the icon to a "right" sign
+        Button buttonEdit = (Button) findViewById(R.id.buttonEdit);
 
         buttonAdd.setVisibility(View.VISIBLE);
+        buttonEdit.setText(IconicConstants.OK);
         MainView.removeEveryOtherView(layoutSheeps);
 
         if (MainView.getSheepSize() == 0) {
@@ -156,7 +158,6 @@ extends AppCompatActivity
             isEditing = !isEditing;
         }
 
-        // TODO: implement logic to remove button
         if (!isRemoving) {
             enterRemoving();
         }
@@ -171,8 +172,10 @@ extends AppCompatActivity
     {
         context = getApplicationContext();
         layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
-        MainView.removeEveryOtherView(layoutSheeps);
+        Button button = (Button) findViewById(R.id.buttonRemove);
 
+        MainView.removeEveryOtherView(layoutSheeps);
+        button.setText(IconicConstants.OK);
         if (MainView.getSheepSize() == 0) {
             isRemoving = !isRemoving;
             exitRemoving();
@@ -186,8 +189,10 @@ extends AppCompatActivity
     {
         context = getApplicationContext();
         layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
+        Button button = (Button) findViewById(R.id.buttonRemove);
         MainView.extractSheeps(context, layoutSheeps);
         MainView.removeEveryOtherView(layoutSheeps);
+        button.setText(IconicConstants.DELETE);
         updateSheeps();
     }
 }
