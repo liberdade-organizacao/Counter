@@ -48,16 +48,14 @@ extends AppCompatActivity
     {
         context = getApplicationContext();
         layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
+        TextView textEmpty = (TextView) findViewById(R.id.textEmpty);
 
         if (mainView.getSheepSize() > 0) {
             mainView.populateSheeps(context, layoutSheeps);
+            textEmpty.setVisibility(View.GONE);
         }
         else {
-            TextView tt = new TextView(context);
-            tt.setText(R.string.empty_sheeps);
-            tt.setTextColor(0xffeeeeee);
-            tt.setBackgroundColor(0xff000000);
-            layoutSheeps.addView(tt);
+            textEmpty.setVisibility(View.VISIBLE);
         }
     }
 
@@ -90,9 +88,11 @@ extends AppCompatActivity
         layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
         Button buttonEdit = (Button) findViewById(R.id.buttonEdit);
         Button buttonAdd = (Button) findViewById(R.id.buttonAdd);
+        TextView textEmpty = (TextView) findViewById(R.id.textEmpty);
 
         buttonEdit.setText(IconicConstants.ADD);
         buttonAdd.setVisibility(View.GONE);
+        textEmpty.setVisibility(View.GONE);
         mainView.extractSheeps(context, layoutSheeps);
         mainView.removeEveryOtherView(layoutSheeps);
         updateSheeps();
@@ -108,6 +108,7 @@ extends AppCompatActivity
 
         buttonAdd.setVisibility(View.VISIBLE);
         buttonEdit.setText(IconicConstants.OK);
+        mainView.extractSheeps(context, layoutSheeps);
         mainView.removeEveryOtherView(layoutSheeps);
 
         if (mainView.getSheepSize() == 0) {
@@ -135,6 +136,7 @@ extends AppCompatActivity
     private LinearLayout addEmptySheep(Context context, LinearLayout layoutSheeps)
     {
         layoutSheeps.addView(mainView.newSheep(context));
+        mainView.setLayoutSheeps(layoutSheeps);
         return layoutSheeps;
     }
 
@@ -172,7 +174,9 @@ extends AppCompatActivity
         layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
         Button button = (Button) findViewById(R.id.buttonRemove);
 
+        mainView.extractSheeps(context, layoutSheeps);
         mainView.removeEveryOtherView(layoutSheeps);
+
         button.setText(IconicConstants.OK);
         if (mainView.getSheepSize() == 0) {
             isRemoving = !isRemoving;

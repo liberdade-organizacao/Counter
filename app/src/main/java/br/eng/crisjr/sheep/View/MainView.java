@@ -24,7 +24,7 @@ public class MainView
      * @return layout filled with sheep
      */
     public LinearLayout populateSheeps(Context context,
-                                              LinearLayout layout)
+                                       LinearLayout layout)
     {
         layoutSheeps = layout;
 
@@ -68,7 +68,7 @@ public class MainView
      * @return the filled layout
      */
     public LinearLayout populateEmptySheeps(Context context,
-                                                   LinearLayout layout)
+                                            LinearLayout layout)
     {
         for (Sheep sheep : controller.getSheeps())
         {
@@ -106,7 +106,8 @@ public class MainView
      * @param context the application context
      * @return an empty layout containing a sheep to be filled
      */
-    public LinearLayout newSheep(Context context) {
+    public LinearLayout newSheep(Context context)
+    {
         LinearLayout layoutSheep = new LinearLayout(context);
         EditText editSheep = new EditText(context);
 
@@ -250,7 +251,7 @@ public class MainView
      * @param ls layout to be edited
      */
     public void populateFilledSheeps(Context context,
-                                            LinearLayout ls)
+                                     LinearLayout ls)
     {
         for (Sheep sheep: controller.getSheeps())
         {
@@ -327,6 +328,14 @@ public class MainView
         }
 
         return result;
+    }
+
+    /**
+     * Setter for layoutSheeps
+     * @param layoutSheeps the current layout used on screen
+     */
+    public void setLayoutSheeps(LinearLayout layoutSheeps) {
+        this.layoutSheeps = layoutSheeps;
     }
 
     /**

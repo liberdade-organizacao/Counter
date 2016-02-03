@@ -40,6 +40,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/buttonAdd"/>
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/empty_sheeps"
+            android:id="@+id/textEmpty"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
