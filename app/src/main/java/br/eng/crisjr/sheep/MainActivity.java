@@ -1,7 +1,6 @@
 package br.eng.crisjr.sheep;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,9 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import java.util.ArrayList;
-import br.eng.crisjr.sheep.Controller.Sheeps;
-import br.eng.crisjr.sheep.Model.Sheep;
 import br.eng.crisjr.sheep.View.IconicConstants;
 import br.eng.crisjr.sheep.View.MainView;
 
@@ -23,6 +19,7 @@ extends AppCompatActivity
     private boolean isRemoving = false;
     private LinearLayout layoutSheeps = null;
     private Context context = null;
+    private MainView mainView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,6 +37,7 @@ extends AppCompatActivity
         btn = (Button) findViewById(R.id.buttonAdd);
         btn.setTypeface(fontIcon); btn.setText(IconicConstants.ADD);
 
+        mainView = new MainView();
         updateSheeps();
     }
 
@@ -48,11 +46,11 @@ extends AppCompatActivity
      */
     private void updateSheeps()
     {
-        LinearLayout layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
-        Context context = getApplicationContext();
+        context = getApplicationContext();
+        layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
 
-        if (MainView.getSheepSize() > 0) {
-            MainView.populateSheeps(context, layoutSheeps);
+        if (mainView.getSheepSize() > 0) {
+            mainView.populateSheeps(context, layoutSheeps);
         }
         else {
             TextView tt = new TextView(context);
@@ -66,7 +64,7 @@ extends AppCompatActivity
     /**
      * Callback to edit button. If it is not in editing mode, it will trigger the
      * edition tools; otherwise it will save the current sheeps' state.
-     * @param view
+     * @param view button that was clicked
      */
     public void onClickEditButton(View view)
     {
@@ -95,8 +93,8 @@ extends AppCompatActivity
 
         buttonEdit.setText(IconicConstants.ADD);
         buttonAdd.setVisibility(View.GONE);
-        MainView.extractSheeps(context, layoutSheeps);
-        MainView.removeEveryOtherView(layoutSheeps);
+        mainView.extractSheeps(context, layoutSheeps);
+        mainView.removeEveryOtherView(layoutSheeps);
         updateSheeps();
     }
 
@@ -110,19 +108,19 @@ extends AppCompatActivity
 
         buttonAdd.setVisibility(View.VISIBLE);
         buttonEdit.setText(IconicConstants.OK);
-        MainView.removeEveryOtherView(layoutSheeps);
+        mainView.removeEveryOtherView(layoutSheeps);
 
-        if (MainView.getSheepSize() == 0) {
+        if (mainView.getSheepSize() == 0) {
             addEmptySheep(context, layoutSheeps);
         }
         else {
-            MainView.populateEmptySheeps(context, layoutSheeps);
+            mainView.populateEmptySheeps(context, layoutSheeps);
         }
     }
 
     /**
      * Callback to "+" button
-     * @param view
+     * @param view button that was clicked
      */
     public void onClickAddButton(View view) {
         addEmptySheep(getApplicationContext());
@@ -136,7 +134,7 @@ extends AppCompatActivity
      */
     private LinearLayout addEmptySheep(Context context, LinearLayout layoutSheeps)
     {
-        layoutSheeps.addView(MainView.newSheep(context));
+        layoutSheeps.addView(mainView.newSheep(context));
         return layoutSheeps;
     }
 
@@ -149,7 +147,7 @@ extends AppCompatActivity
 
     /**
      * Sets the callback to the remove button
-     * @param view
+     * @param view button that was clicked
      */
     public void onClickRemoveButton(View view)
     {
@@ -174,14 +172,14 @@ extends AppCompatActivity
         layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
         Button button = (Button) findViewById(R.id.buttonRemove);
 
-        MainView.removeEveryOtherView(layoutSheeps);
+        mainView.removeEveryOtherView(layoutSheeps);
         button.setText(IconicConstants.OK);
-        if (MainView.getSheepSize() == 0) {
+        if (mainView.getSheepSize() == 0) {
             isRemoving = !isRemoving;
             exitRemoving();
         }
         else {
-            MainView.populateFilledSheeps(context, layoutSheeps);
+            mainView.populateFilledSheeps(context, layoutSheeps);
         }
     }
 
@@ -190,8 +188,8 @@ extends AppCompatActivity
         context = getApplicationContext();
         layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
         Button button = (Button) findViewById(R.id.buttonRemove);
-        MainView.extractSheeps(context, layoutSheeps);
-        MainView.removeEveryOtherView(layoutSheeps);
+        mainView.extractSheeps(context, layoutSheeps);
+        mainView.removeEveryOtherView(layoutSheeps);
         button.setText(IconicConstants.DELETE);
         updateSheeps();
     }
