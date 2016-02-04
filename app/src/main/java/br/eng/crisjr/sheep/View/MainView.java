@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import br.eng.crisjr.sheep.Controller.Sheeps;
 import br.eng.crisjr.sheep.Model.Sheep;
@@ -16,6 +17,7 @@ import java.util.Random;
 public class MainView
 {
     private LinearLayout layoutSheeps = null;
+    private Context context = null;
     private Sheeps controller = new Sheeps();
     private ScreenUtil screen = new ScreenUtil();
     private int screenWidth = 0;
@@ -40,7 +42,8 @@ public class MainView
             layout.addView(newSheep(context, name, count));
         }
 
-        layoutSheeps = layout;
+        this.layoutSheeps = layout;
+        this.context = context;
         return layout;
     }
 
@@ -56,9 +59,9 @@ public class MainView
         LinearLayout layoutSheep = new LinearLayout(context);
         TextView textSheep = new TextView(context);
 
-        textSheep.setLayoutParams(new LinearLayout.LayoutParams(60*screenWidth/100,
+        textSheep.setLayoutParams(new LinearLayout.LayoutParams(screenWidth/2,
                                                                 ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                0.6f));
+                                                                0.5f));
         textSheep.setText(name);
         textSheep.setTextColor(0xffeeeeee);
         textSheep.setBackgroundColor(0xff000000);
@@ -83,7 +86,8 @@ public class MainView
             layout.addView(newSheepToFill(context, sheep.getName(), sheep.getCount()));
         }
 
-        layoutSheeps = layout;
+        this.layoutSheeps = layout;
+        this.context = context;
         return layout;
     }
 
@@ -99,12 +103,13 @@ public class MainView
         LinearLayout layoutSheep = new LinearLayout(context);
         EditText textSheep = new EditText(context);
 
-        textSheep.setLayoutParams(new LinearLayout.LayoutParams(60*screenWidth/100,
+        textSheep.setLayoutParams(new LinearLayout.LayoutParams(screenWidth/2,
                                                                 ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                0.6f));
+                                                                0.5f));
         textSheep.setText(name);
         textSheep.setTextColor(0xffeeeeee);
         textSheep.setBackgroundColor(0xff000000);
+        textSheep.setImeOptions(EditorInfo.IME_ACTION_DONE);
         layoutSheep.addView(textSheep);
         return populateSheep(context, layoutSheep, count);
     }
@@ -119,9 +124,9 @@ public class MainView
         LinearLayout layoutSheep = new LinearLayout(context);
         EditText editSheep = new EditText(context);
 
-        editSheep.setLayoutParams(new LinearLayout.LayoutParams(60*screenWidth/100,
+        editSheep.setLayoutParams(new LinearLayout.LayoutParams(50*screenWidth/100,
                                                                 ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                0.6f));
+                                                                0.5f));
         layoutSheep.addView(editSheep);
         return populateSheep(context, layoutSheep, 0);
     }
@@ -146,9 +151,9 @@ public class MainView
         buttonMinus.setBackgroundColor(0xff000000);
         buttonMinus.setTextColor(0xffeeeeee);
         buttonMinus.setId(random.nextInt());
-        buttonMinus.setLayoutParams(new LinearLayout.LayoutParams(8*screenWidth/100,
+        buttonMinus.setLayoutParams(new LinearLayout.LayoutParams(13*screenWidth/100,
                                                                   ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                  0.08f));
+                                                                  0.13f));
         buttonMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,9 +172,9 @@ public class MainView
         buttonPlus.setBackgroundColor(0xff000000);
         buttonPlus.setTextColor(0xffeeeeee);
         buttonPlus.setId(random.nextInt());
-        buttonPlus.setLayoutParams(new LinearLayout.LayoutParams(8*screenWidth/100,
+        buttonPlus.setLayoutParams(new LinearLayout.LayoutParams(13*screenWidth/100,
                                                                  ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                 0.08f));
+                                                                 0.13f));
         buttonPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,6 +186,7 @@ public class MainView
         layoutSheep.addView(buttonMinus);
         layoutSheep.addView(textCounter);
         layoutSheep.addView(buttonPlus);
+        this.context = context;
         return layoutSheep;
     }
 
@@ -196,15 +202,15 @@ public class MainView
         TextView tv = (TextView) sheep.getChildAt(2);
         int count = Integer.parseInt(tv.getText().toString());
         tv.setText(screen.itos(count + step));
+        store();
     }
 
     /**
      * Creates a list out a layout on the screen.
-     * @param context the application context.
      * @param layoutSheeps the layout from which the method will extract the sheep.
      * @return an arraylist of the sheep currently on screen.
      */
-    public ArrayList<Sheep> extractSheeps(Context context, LinearLayout layoutSheeps)
+    public ArrayList<Sheep> extractSheeps(LinearLayout layoutSheeps)
     {
         ArrayList<Sheep> sheeps = new ArrayList<>();
         int howMany = layoutSheeps.getChildCount();
@@ -284,7 +290,8 @@ public class MainView
         tvc.setText(screen.itos(sheep.getCount()));
         tvc.setGravity(Gravity.CENTER);
         tvc.setTextColor(0xffeeeeee);
-        bt.setText("Delete");
+        bt.setText(IconicConstants.DELETE);
+        bt.setTypeface(IconicConstants.getTypeface());
         bt.setBackgroundColor(0xff000000);
         bt.setTextColor(0xfff93822);
         bt.setId(random.nextInt());
@@ -297,15 +304,15 @@ public class MainView
             }
         });
 
-        tvn.setLayoutParams(new LinearLayout.LayoutParams(60*screenWidth/100,
+        tvn.setLayoutParams(new LinearLayout.LayoutParams(screenWidth/2,
                                                           ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                          0.6f));
-        tvc.setLayoutParams(new LinearLayout.LayoutParams(20*screenWidth/100,
+                                                          0.5f));
+        tvc.setLayoutParams(new LinearLayout.LayoutParams(screenWidth/4,
                                                           ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                          0.2f));
-        bt.setLayoutParams(new LinearLayout.LayoutParams(20*screenWidth/100,
+                                                          0.25f));
+        bt.setLayoutParams(new LinearLayout.LayoutParams(screenWidth/4,
                                                          ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                         0.2f));
+                                                         0.25f));
 
         layout.addView(tvn);
         layout.addView(bt);
@@ -318,6 +325,7 @@ public class MainView
     {
         int index = getSheepIndexWithButton(button);
         layoutSheeps.removeViewAt(index);
+        store();
     }
 
     private int getSheepIndexWithButton(Button toFind)
@@ -338,7 +346,7 @@ public class MainView
                 }
             }
             catch (NullPointerException bacon) {
-
+                pass();
             }
         }
 
@@ -360,5 +368,33 @@ public class MainView
     public int getSheepSize()
     {
         return controller.getSheeps().size();
+    }
+
+    private void pass() { }
+
+    /**
+     * Saves the sheep to memory
+     */
+    public void store()
+    {
+        extractSheeps(this.layoutSheeps);
+        controller.store(this.context);
+    }
+
+    /**
+     * Retrieves the current sheep on memory
+     */
+    public void retrieve()
+    {
+        controller.retrieve(this.context);
+    }
+
+    /**
+     * Retrieves sheep from memory based on applocation context
+     * @param context application context
+     */
+    public void retrieve(Context context)
+    {
+        controller.retrieve(context);
     }
 }

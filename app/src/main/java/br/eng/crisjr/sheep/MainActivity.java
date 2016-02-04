@@ -38,6 +38,7 @@ extends AppCompatActivity
         btn.setTypeface(fontIcon); btn.setText(IconicConstants.ADD);
 
         mainView = new MainView();
+        mainView.retrieve(getApplicationContext());
         updateSheeps();
     }
 
@@ -93,7 +94,7 @@ extends AppCompatActivity
         buttonEdit.setText(IconicConstants.ADD);
         buttonAdd.setVisibility(View.GONE);
         textEmpty.setVisibility(View.GONE);
-        mainView.extractSheeps(context, layoutSheeps);
+        mainView.extractSheeps(layoutSheeps);
         mainView.removeEveryOtherView(layoutSheeps);
         updateSheeps();
     }
@@ -108,7 +109,7 @@ extends AppCompatActivity
 
         buttonAdd.setVisibility(View.VISIBLE);
         buttonEdit.setText(IconicConstants.OK);
-        mainView.extractSheeps(context, layoutSheeps);
+        mainView.extractSheeps(layoutSheeps);
         mainView.removeEveryOtherView(layoutSheeps);
 
         if (mainView.getSheepSize() == 0) {
@@ -174,7 +175,7 @@ extends AppCompatActivity
         layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
         Button button = (Button) findViewById(R.id.buttonRemove);
 
-        mainView.extractSheeps(context, layoutSheeps);
+        mainView.extractSheeps(layoutSheeps);
         mainView.removeEveryOtherView(layoutSheeps);
 
         button.setText(IconicConstants.OK);
@@ -192,7 +193,7 @@ extends AppCompatActivity
         context = getApplicationContext();
         layoutSheeps = (LinearLayout) findViewById(R.id.layoutSheeps);
         Button button = (Button) findViewById(R.id.buttonRemove);
-        mainView.extractSheeps(context, layoutSheeps);
+        mainView.extractSheeps(layoutSheeps);
         mainView.removeEveryOtherView(layoutSheeps);
         button.setText(IconicConstants.DELETE);
         updateSheeps();

@@ -1,6 +1,9 @@
 package br.eng.crisjr.sheep.Controller;
 
 import java.util.ArrayList;
+
+import android.content.Context;
+import br.eng.crisjr.sheep.Model.Database;
 import br.eng.crisjr.sheep.Model.Sheep;
 
 /**
@@ -10,8 +13,10 @@ import br.eng.crisjr.sheep.Model.Sheep;
  */
 public class Sheeps {
     private ArrayList<Sheep> sheeps = null;
+    private Database data = null;
 
     public Sheeps() {
+        this.data = new Database();
         this.sheeps = new ArrayList<Sheep>();
     }
 
@@ -47,5 +52,18 @@ public class Sheeps {
         sheep.setName(name);
         sheep.setCount(count);
         return sheep;
+    }
+
+    public ArrayList<Sheep> retrieve(Context context)
+    {
+        return setSheeps(data.retrieve(context));
+    }
+
+    /**
+     * Saves the current sheep array to memory
+     */
+    public void store(Context context)
+    {
+        this.data.store(context, this.sheeps);
     }
 }
