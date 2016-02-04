@@ -1,6 +1,7 @@
 package br.eng.crisjr.sheep.View;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -16,6 +17,8 @@ public class MainView
 {
     private LinearLayout layoutSheeps = null;
     private Sheeps controller = new Sheeps();
+    private ScreenUtil screen = new ScreenUtil();
+    private int screenWidth = 0;
 
     /**
      * Fills the sheeps layout with sheep
@@ -27,6 +30,8 @@ public class MainView
                                        LinearLayout layout)
     {
         layoutSheeps = layout;
+        screen = new ScreenUtil(context);
+        screenWidth = screen.convertPixtoDip(screen.getScreenWidth());
 
         for (Sheep sheep: controller.getSheeps())
         {
@@ -51,9 +56,9 @@ public class MainView
         LinearLayout layoutSheep = new LinearLayout(context);
         TextView textSheep = new TextView(context);
 
-        textSheep.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                0.6f));
+        textSheep.setLayoutParams(new LinearLayout.LayoutParams(60*screenWidth/100,
+                                                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                                0.6f));
         textSheep.setText(name);
         textSheep.setTextColor(0xffeeeeee);
         textSheep.setBackgroundColor(0xff000000);
@@ -70,6 +75,9 @@ public class MainView
     public LinearLayout populateEmptySheeps(Context context,
                                             LinearLayout layout)
     {
+        screen = new ScreenUtil(context);
+        screenWidth = screen.convertPixtoDip(screen.getScreenWidth());
+
         for (Sheep sheep : controller.getSheeps())
         {
             layout.addView(newSheepToFill(context, sheep.getName(), sheep.getCount()));
@@ -91,7 +99,7 @@ public class MainView
         LinearLayout layoutSheep = new LinearLayout(context);
         EditText textSheep = new EditText(context);
 
-        textSheep.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        textSheep.setLayoutParams(new LinearLayout.LayoutParams(60*screenWidth/100,
                                                                 ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                 0.6f));
         textSheep.setText(name);
@@ -111,7 +119,7 @@ public class MainView
         LinearLayout layoutSheep = new LinearLayout(context);
         EditText editSheep = new EditText(context);
 
-        editSheep.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        editSheep.setLayoutParams(new LinearLayout.LayoutParams(60*screenWidth/100,
                                                                 ViewGroup.LayoutParams.WRAP_CONTENT,
                                                                 0.6f));
         layoutSheep.addView(editSheep);
@@ -134,32 +142,34 @@ public class MainView
 
         buttonMinus.setTypeface(IconicConstants.getTypeface());
         buttonMinus.setText(IconicConstants.LEFT);
+        buttonMinus.setGravity(Gravity.CENTER);
         buttonMinus.setBackgroundColor(0xff000000);
         buttonMinus.setTextColor(0xffeeeeee);
         buttonMinus.setId(random.nextInt());
-        buttonMinus.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        buttonMinus.setLayoutParams(new LinearLayout.LayoutParams(8*screenWidth/100,
                                                                   ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                  0.1f));
+                                                                  0.08f));
         buttonMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 count((Button) v, -1);
             }
         });
-        textCounter.setText(new Integer(count).toString());
+        textCounter.setText(screen.itos(count));
         textCounter.setTextColor(0xffeeeeee);
-//        textCounter.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        textCounter.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        textCounter.setGravity(Gravity.CENTER);
+        textCounter.setLayoutParams(new LinearLayout.LayoutParams(24*screenWidth/100,
                                                                   ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                  0.2f));
+                                                                  0.24f));
         buttonPlus.setTypeface(IconicConstants.getTypeface());
         buttonPlus.setText(IconicConstants.RIGHT);
+        buttonPlus.setGravity(Gravity.CENTER);
         buttonPlus.setBackgroundColor(0xff000000);
         buttonPlus.setTextColor(0xffeeeeee);
         buttonPlus.setId(random.nextInt());
-        buttonPlus.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                  ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                                  0.1f));
+        buttonPlus.setLayoutParams(new LinearLayout.LayoutParams(8*screenWidth/100,
+                                                                 ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                                 0.08f));
         buttonPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,7 +195,7 @@ public class MainView
         LinearLayout sheep = (LinearLayout) layoutSheeps.getChildAt(index);
         TextView tv = (TextView) sheep.getChildAt(2);
         int count = Integer.parseInt(tv.getText().toString());
-        tv.setText(new Integer(count + step).toString());
+        tv.setText(screen.itos(count + step));
     }
 
     /**
@@ -271,13 +281,15 @@ public class MainView
 
         tvn.setText(sheep.getName());
         tvn.setTextColor(0xffeeeeee);
-        tvc.setText(new Integer(sheep.getCount()).toString());
+        tvc.setText(screen.itos(sheep.getCount()));
+        tvc.setGravity(Gravity.CENTER);
         tvc.setTextColor(0xffeeeeee);
         bt.setText("Delete");
         bt.setBackgroundColor(0xff000000);
         bt.setTextColor(0xfff93822);
         bt.setId(random.nextInt());
         bt.setClickable(true);
+        bt.setGravity(Gravity.CENTER);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -285,12 +297,15 @@ public class MainView
             }
         });
 
-        tvn.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 0.6f));
-        tvc.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
-        bt.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
+        tvn.setLayoutParams(new LinearLayout.LayoutParams(60*screenWidth/100,
+                                                          ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                          0.6f));
+        tvc.setLayoutParams(new LinearLayout.LayoutParams(20*screenWidth/100,
+                                                          ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                          0.2f));
+        bt.setLayoutParams(new LinearLayout.LayoutParams(20*screenWidth/100,
+                                                         ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                         0.2f));
 
         layout.addView(tvn);
         layout.addView(bt);
@@ -311,12 +326,12 @@ public class MainView
 
         for (int i = 0; i < layoutSheeps.getChildCount() && result < 0; i++)
         {
-            LinearLayout sheep = (LinearLayout) layoutSheeps.getChildAt(i);
-            Button current = (Button) sheep.getChildAt(1);
-            if (current.getId() == toFind.getId()) {
-                result = i;
-            }
             try {
+                LinearLayout sheep = (LinearLayout) layoutSheeps.getChildAt(i);
+                Button current = (Button) sheep.getChildAt(1);
+                if (current.getId() == toFind.getId()) {
+                    result = i;
+                }
                 current = (Button) sheep.getChildAt(3);
                 if (current.getId() == toFind.getId()) {
                     result = i;
