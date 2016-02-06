@@ -42,7 +42,7 @@ public class Database
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         int size = preferences.getInt("size", -1);
 
-        if (size < 0) {
+        if (size > 0) {
             for (int i = 0; i < size; ++i)
             {
                 Sheep animal = new Sheep();

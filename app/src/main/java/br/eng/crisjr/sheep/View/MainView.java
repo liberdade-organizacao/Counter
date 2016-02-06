@@ -22,6 +22,17 @@ public class MainView
     private ScreenUtil screen = new ScreenUtil();
     private int screenWidth = 0;
 
+    public MainView()
+    {
+
+    }
+
+    public MainView(Context context)
+    {
+        this.context = context;
+        this.controller = new Sheeps(this.context);
+    }
+
     /**
      * Fills the sheeps layout with sheep
      * @param context application context

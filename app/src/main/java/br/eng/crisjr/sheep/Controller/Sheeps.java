@@ -20,9 +20,12 @@ public class Sheeps {
         this.sheeps = new ArrayList<Sheep>();
     }
 
-    public Sheeps(String path) {
+    public Sheeps(Context context)
+    {
         this();
+        this.sheeps = this.data.retrieve(context);
     }
+
 
     public void addSheep(String name) {
         Sheep sheep = new Sheep(name);

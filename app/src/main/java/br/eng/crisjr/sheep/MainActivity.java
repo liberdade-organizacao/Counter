@@ -37,8 +37,7 @@ extends AppCompatActivity
         btn = (Button) findViewById(R.id.buttonAdd);
         btn.setTypeface(fontIcon); btn.setText(IconicConstants.ADD);
 
-        mainView = new MainView();
-        mainView.retrieve(getApplicationContext());
+        mainView = new MainView(getApplicationContext());
         updateSheeps();
     }
 
