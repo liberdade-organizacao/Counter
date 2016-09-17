@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sheep</string>
+    <string name="app_name">Counting Sheep</string>
     <string name="empty_sheeps">Add something to start counting</string>
     <string name="typeface_name">open-iconic.ttf</string>
     <!--<string name="button_remove">&x;</string>-->

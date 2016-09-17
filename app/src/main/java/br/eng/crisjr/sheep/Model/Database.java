@@ -8,7 +8,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
- * Class to store and retrieve data
+ * Class to store and retrieve data from device
  */
 public class Database
 {
